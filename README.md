@@ -1,4 +1,4 @@
-# De quem é? — jogo de cartas das eleições 2026
+# Em Defesa da Democracia — jogo de cartas das eleições 2026
 
 Abra `index.html` no navegador. Não precisa instalar nada.
 
