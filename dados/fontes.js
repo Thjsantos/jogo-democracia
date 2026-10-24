@@ -34,4 +34,6 @@ const FONTES = {
   rachadinha: { titulo: "TNH1 – TJ-RJ arquiva denúncia das rachadinhas", url: "https://www.tnh1.com.br/noticia/nid/tribunal-do-rj-arquiva-denuncia-contra-flavio-bolsonaro-no-caso-das-rachadinhas/" },
   lavaJato: { titulo: "Conjur – Fachin anula condenações de Lula", url: "https://www.conjur.com.br/2021-mar-12/fachin-manda-anulacao-condenacoes-lula-plenario-stf//?print=1" },
   irLula: { titulo: "Exame – Lula sanciona isenção do IR até R$ 5 mil", url: "https://exame.com/brasil/lula-sanciona-isencao-do-imposto-de-renda-para-salarios-de-ate-r-5-mil" },
+  lupaGlobo: { titulo: "Agência Lupa – checagem do debate da Globo (23/10)", url: "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/" },
+  transposicao: { titulo: "Brasil de Fato – Comprova sobre a transposição do São Francisco", url: "https://www.brasildefato.com.br/2026/10/23/flavio-mente-sobre-transposicao-do-sao-francisco-ao-dizer-que-bolsonaro-fez-chegar-agua-ate-o-nordeste/" },
 };
