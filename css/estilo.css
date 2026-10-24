@@ -45,15 +45,29 @@ p{margin:0 0 12px}
 .choice:disabled{cursor:default;opacity:.5}
 .choice.picked{opacity:1;box-shadow:inset 0 0 0 3px var(--ink)}
 .feedback{margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--surface);border:2px solid var(--line)}
-.feedback h2{font-size:1.1rem;margin:0 0 4px}
-.feedback.ok h2{color:var(--ok)} .feedback.bad h2{color:var(--bad)}
+.feedback.ok{border-color:var(--ok)} .feedback.bad{border-color:var(--bad)}
+
+/* carimbo que "bate" no cartão depois da resposta */
+.card{position:relative}
+.carimbo{position:absolute;top:14px;right:14px;z-index:2;pointer-events:none;
+  font-size:1.5rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase;line-height:1;
+  padding:10px 16px;border:4px solid currentColor;border-radius:10px;background:var(--surface);
+  box-shadow:inset 0 0 0 3px var(--surface),inset 0 0 0 5px currentColor;
+  transform:rotate(-12deg);opacity:.93;animation:carimbar .32s cubic-bezier(.2,.9,.3,1.2)}
+.carimbo.ok{color:var(--ok)}
+.carimbo.no{color:var(--bad)}
+@keyframes carimbar{
+  from{transform:rotate(-24deg) scale(2.6);opacity:0}
+  to{transform:rotate(-12deg) scale(1);opacity:.93}
+}
+@media (prefers-reduced-motion:reduce){.carimbo{animation:none}}
 .feedback a{color:inherit}
 .tag{display:inline-block;font-weight:700;padding:1px 9px;border-radius:99px;font-size:.9rem}
 .tag.a{background:var(--a-soft);color:var(--ink);border:1.5px solid var(--a)}
 .tag.b{background:var(--b-soft);color:var(--ink);border:1.5px solid var(--b)}
 .big{font-size:3.4rem;font-weight:800;letter-spacing:-.03em;line-height:1;margin:10px 0 4px}
 .miss{border-top:1px solid var(--line);padding:10px 0;font-size:.95rem}
-footer{margin-top:auto;padding-top:28px}
+.aviso{margin:14px 0 0;font-size:.82rem;line-height:1.45}
 .modes{display:grid;gap:10px;margin:16px 0}
 .mode{display:block;border:2px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;background:var(--surface)}
 .mode strong{display:block;font-size:1.05rem}

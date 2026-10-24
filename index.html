@@ -17,7 +17,7 @@
       <label class="mode"><input type="radio" name="mode" value="propostas" checked>
         <strong>Propostas</strong><span>De quem é esta proposta de governo?</span></label>
       <label class="mode"><input type="radio" name="mode" value="infos">
-        <strong>Informações</strong><span>Verdadeiro ou falso? Falas e fatos sobre os candidatos, com a checagem e a fonte.</span></label>
+        <strong>Informações</strong><span>Identifique se a informação é fato ou fake, com a checagem e a fonte.</span></label>
     </div>
     <div class="opts" role="radiogroup" aria-label="Número de cartas">
       <label><input type="radio" name="n" value="10" checked><span>10 cartas</span></label>
@@ -25,6 +25,13 @@
       <label><input type="radio" name="n" value="999"><span>Todas</span></label>
     </div>
     <button class="btn" id="start">Começar</button>
+    <!-- Aviso de fontes: fica na tela inicial, junto do botão, e some quando o jogo começa.
+         O texto muda conforme o modo escolhido (ver RODAPES em js/jogo.js) -->
+    <p class="muted aviso" id="rodape">
+      Conteúdo baseado em reportagens e nos planos de governo registrados no TSE (out/2026). Os resumos são simplificados;
+      para o texto completo dos planos, consulte o <a href="https://divulgacandcontas.tse.jus.br" target="_blank" rel="noopener">DivulgaCand/TSE</a>.
+      Projeto independente, sem vínculo com candidatos, partidos ou campanhas.
+    </p>
   </section>
 
   <!-- Jogo -->
@@ -32,6 +39,7 @@
     <div class="bar"><span id="count"></span><span id="score"></span></div>
     <div class="progress"><i id="prog"></i></div>
     <article class="card" id="card">
+      <div class="carimbo hidden" id="carimbo"></div>
       <div class="who hidden" id="who"></div>
       <div class="topic" id="topic"></div>
       <div class="text" id="text"></div>
@@ -39,7 +47,6 @@
     </article>
     <div class="choices" id="choices"></div>
     <div class="feedback hidden" id="fb">
-      <h2 id="fbh"></h2>
       <p id="fbp" style="margin:0"></p>
       <p id="fbn" style="margin:8px 0 0;font-size:.95rem"></p>
       <p class="muted" style="margin:6px 0 0">Fonte: <a id="src" target="_blank" rel="noopener"></a></p>
@@ -56,11 +63,6 @@
     <button class="btn" id="again" style="margin-top:18px">Jogar de novo</button>
   </section>
 
-  <footer class="muted">
-    Conteúdo baseado em reportagens e nos planos de governo registrados no TSE (out/2026). Os resumos são simplificados;
-    para o texto completo dos planos, consulte o <a href="https://divulgacandcontas.tse.jus.br" target="_blank" rel="noopener">DivulgaCand/TSE</a>.
-    Projeto independente, sem vínculo com candidatos, partidos ou campanhas.
-  </footer>
 </main>
 
 <script src="dados/fontes.js"></script>

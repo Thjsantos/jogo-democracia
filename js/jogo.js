@@ -4,8 +4,19 @@ const CANDIDATOS = {
   lula:   { nome: "Lula",             botao: "Lula",   classe: "a" },
   flavio: { nome: "Flávio Bolsonaro", botao: "Flávio", classe: "b" },
 };
-const RESPOSTAS = { verdadeiro: "Verdadeiro", falso: "Falso" };
+const RESPOSTAS = { verdadeiro: "Fato", falso: "Fake" };
 const MODOS = { propostas: PROPOSTAS, infos: INFORMACOES };
+
+// texto do rodapé de cada modo (muda quando o jogador escolhe o modo na tela inicial)
+const RODAPES = {
+  propostas: `Conteúdo baseado em reportagens e nos planos de governo registrados no TSE (out/2026). Os resumos são simplificados;
+    para o texto completo dos planos, consulte o <a href="https://divulgacandcontas.tse.jus.br" target="_blank" rel="noopener">DivulgaCand/TSE</a>.
+    Projeto independente, sem vínculo com candidatos, partidos ou campanhas.`,
+  infos: `Conteúdo baseado em checagens da <a href="https://www.agencialupa.org" target="_blank" rel="noopener">Agência Lupa</a>,
+    do <a href="https://www.aosfatos.org" target="_blank" rel="noopener">Aos Fatos</a> e do Fato ou Fake, do g1, e em reportagens.
+    Os resumos são simplificados; cada carta traz o link da fonte para você conferir.
+    Investigações em andamento não significam condenação. Projeto independente, sem vínculo com candidatos, partidos ou campanhas.`,
+};
 
 const $ = id => document.getElementById(id);
 let baralho = [], pos = 0, acertos = 0, erros = [], travado = false, modo = "propostas";
@@ -67,10 +78,10 @@ function desenharCarta() {
   $("topic").textContent = checagem ? carta.contexto : carta.tema;
   $("text").textContent = carta.texto;
   $("text").classList.toggle("quote", fala);
-  $("ask").textContent = checagem ? "Verdadeiro ou falso?" : "De quem é esta proposta?";
+  $("ask").textContent = checagem ? "Identifique se a informação é fato ou fake" : "De quem é esta proposta?";
 
   const opcoes = checagem
-    ? [["verdadeiro", "Verdadeiro", "ok"], ["falso", "Falso", "no"]]
+    ? [["verdadeiro", RESPOSTAS.verdadeiro, "ok"], ["falso", RESPOSTAS.falso, "no"]]
     : [["lula", CANDIDATOS.lula.botao, "a"], ["flavio", CANDIDATOS.flavio.botao, "b"]];
   const caixa = $("choices");
   caixa.innerHTML = opcoes.map(([valor, rotulo, classe]) =>
@@ -79,6 +90,7 @@ function desenharCarta() {
 
   const cartao = $("card");
   cartao.style.animation = "none"; cartao.offsetHeight; cartao.style.animation = "";
+  $("carimbo").className = "carimbo hidden";
   $("fb").classList.add("hidden");
   $("next").classList.add("hidden");
 }
@@ -98,7 +110,13 @@ function responder(escolha) {
 
   const fb = $("fb");
   fb.className = "feedback " + (acertou ? "ok" : "bad");
-  $("fbh").textContent = acertou ? "Acertou!" : "Não foi dessa vez";
+
+  // carimbo no cartão; recriar a classe reinicia a animação
+  const carimbo = $("carimbo");
+  carimbo.className = "carimbo hidden";
+  carimbo.offsetHeight;
+  carimbo.textContent = acertou ? "Acertou" : "Errou";
+  carimbo.className = "carimbo " + (acertou ? "ok" : "no");
 
   if (ehChecagem(carta)) {
     const complemento = carta.tipo === "rede" ? ""
@@ -125,18 +143,33 @@ function proxima() {
   if (++pos < baralho.length) desenharCarta(); else terminar();
 }
 
+// Mensagem final por faixa de acerto: 100%; de 70% a menos de 100%; de 40% a menos de 70%; abaixo de 40%.
+// Cada faixa vale a partir do "minimo" e a lista é lida do maior para o menor.
+const MENSAGENS = [
+  { minimo: 1,   titulo: "Você está pronto para votar!",
+    texto: "Acertou tudo. Sabe separar o que é fato do que é fake." },
+  { minimo: .7,  titulo: "Você está quase pronto para votar.",
+    texto: "Falta pouco. Confira nas fontes o que errou." },
+  { minimo: .4,  titulo: "Você ainda não está pronto para votar.",
+    texto: "Vale rever as cartas que errou e ler as fontes antes de decidir." },
+  { minimo: 0,   titulo: "Definitivamente, você não está pronto para votar.",
+    texto: "Ou não se importa com os fatos." },
+];
+const mensagemDaPontuacao = proporcao => MENSAGENS.find(m => proporcao >= m.minimo);
+
 function terminar() {
   mostrar("end");
   $("final").textContent = `${acertos}/${baralho.length}`;
-  const pct = acertos / baralho.length;
-  $("verdict").textContent = pct >= .8 ? "Você conhece bem esses candidatos!"
-    : pct >= .5 ? "Boa! Mas ainda dá para aprender mais."
-    : "Muita gente erra: nem tudo combina com a imagem de cada candidato. Vale conferir as fontes.";
+  const mensagem = mensagemDaPontuacao(acertos / baralho.length);
+  $("verdict").innerHTML = `<strong>${mensagem.titulo}</strong><br>${mensagem.texto}`;
   $("misses").innerHTML = erros.length
     ? "<p><strong>Para revisar:</strong></p>" + erros.map(c =>
         `<div class="miss">${etiqueta(c.quem)} ${c.texto}</div>`).join("")
     : "";
 }
+
+document.querySelectorAll("input[name=mode]").forEach(r =>
+  r.onchange = () => { $("rodape").innerHTML = RODAPES[r.value]; });
 
 $("start").onclick = comecar;
 $("next").onclick = proxima;

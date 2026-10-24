@@ -10,7 +10,7 @@ css/estilo.css         cores e layout
 js/jogo.js             lógica do jogo
 dados/fontes.js        links das fontes citadas
 dados/propostas.js     cartas do modo Propostas
-dados/informacoes.js   cartas do modo Informações (verdadeiro ou falso)
+dados/informacoes.js   cartas do modo Informações (fato ou fake)
 scripts/verificar.js   confere os dados antes de publicar
 ```
 
